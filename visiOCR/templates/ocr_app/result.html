@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor pass</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #3f51b5;
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .guest-info {
+            padding: 30px;
+        }
+
+        .guest-info h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #3f51b5;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .info-item {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item strong {
+            flex: 1;
+            font-weight: 600;
+            font-size: 16px;
+            color: #424242;
+        }
+
+        .info-item span {
+            flex: 2;
+            font-size: 16px;
+            color: #616161;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .qr-code img {
+            max-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .validity {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #424242;
+        }
+
+        .btn {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Visitor Pass</h2>
+        </div>
+        <div class="guest-info">
+            <h1>Visitor Information</h1>
+            <div class="info-item">
+                <strong>Name:</strong>
+                <span>{{ name }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Gender:</strong>
+                <span>{{ gender }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Date of Birth:</strong>
+                <span>{{ birth_date }}</span>
+            </div>
+            {% if pan_number %}
+            <div class="info-item">
+                <strong>PAN Number:</strong>
+                <span>{{ pan_number }}</span>
+            </div>
+            {% endif %}
+            {% if aadhaar_number %}
+            <div class="info-item">
+                <strong>Aadhaar No.:</strong>
+                <span>{{ aadhaar_number }}</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="qr-code">
+            <img src="data:image/png;base64,{{ qr_code_image_data }}" alt="QR Code">
+        </div>
+        <div class="validity">
+            <p>This pass is valid for {{ duration }} hours from {{ visit_date }}.</p>
+        </div>
+        <div style="text-align: center;">
+            <form action="{% url 'download_pdf' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="name" value="{{ name }}">
+                <input type="hidden" name="birth_date" value="{{ birth_date }}">
+                <input type="hidden" name="age" value="{{ age }}">
+                <input type="hidden" name="pan_number" value="{{ pan_number }}">
+                <input type="hidden" name="aadhaar_number" value="{{ aadhaar_number }}">
+                <input type="hidden" name="gender" value="{{ gender }}">
+                <input type="hidden" name="visit_date" value="{{ visit_date }}">
+                <input type="hidden" name="duration" value="{{ duration }}">
+                <input type="hidden" name="qr_code_image_data" value="{{ qr_code_image_data }}">
+                <button type="submit" class="btn">Download PDF</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

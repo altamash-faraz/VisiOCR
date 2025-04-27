@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Data </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffffc2;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #49e6e6 0%, #764ba2 100%);
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="date"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 2px solid #121212;
+            margin-top: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="date"]:focus,
+        input[type="number"]:focus {
+            border-color: #838486;
+            outline: none;
+        }
+
+        .file-upload {
+            margin-bottom: 20px;
+        }
+
+        .file-upload label {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #38d8db;
+            color: #fff;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .file-upload label:hover {
+            background-color: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        #file-name {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .btn {
+            background-color: #8599f0;
+            color: #fff;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 30px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #5563d7;
+            transform: translateY(-2px);
+        }
+
+        .qr-code img {
+            max-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        @media screen and (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                font-size: 0.9rem;
+            }
+
+            input[type="date"],
+            input[type="number"] {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Upload Data</h1>
+        <div class="file-upload">
+            <form action="{% url 'upload_image' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="visit_date">Date of Visit:</label>
+                    <input type="date" name="visit_date" id="visit_date" required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duration of Visit (hours):</label>
+                    <input type="number" name="duration" id="duration" required>
+                </div>
+                <label>
+                    Select Image
+                    <input type="file" name="image" accept="image/*" id="image" onchange="displayFileName()">
+                </label>
+                <span id="file-name"></span>
+                <button type="submit" class="btn">Upload Image</button>
+            </form>
+        </div>
+        {% if name %}
+        <form action="{% url 'download_pdf' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="name" value="{{ name }}">
+            <input type="hidden" name="birth_date" value="{{ birth_date }}">
+            <input type="hidden" name="age" value="{{ age }}">
+            <input type="hidden" name="pan_number" value="{{ pan_number }}">
+            <input type="hidden" name="aadhaar_number" value="{{ aadhaar_number }}">
+            <input type="hidden" name="gender" value="{{ gender }}">
+            <input type="hidden" name="visit_date" value="{{ visit_date }}">
+            <input type="hidden" name="duration" value="{{ duration }}">
+            <button type="submit" class="btn">Generate PDF</button>
+        </form>
+        {% endif %}
+    </div>
+    <script>
+        function displayFileName() {
+            const input = document.getElementById('image');
+            const fileName = input.files[0] ? input.files[0].name : '';
+            document.getElementById('file-name').innerText = fileName;
+        }
+    </script>
+</body>
+
+</html>

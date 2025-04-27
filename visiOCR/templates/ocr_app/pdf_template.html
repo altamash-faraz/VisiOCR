@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Pass</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .info-container {
+            background: #fff;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 10px;
+            color: #667eea;
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .info strong {
+            flex-basis: 40%;
+            text-align: right;
+            padding-right: 10px;
+            font-weight: 700;
+            color: #764ba2;
+        }
+
+        .info span {
+            flex-basis: 60%;
+            text-align: left;
+            color: #555;
+        }
+
+        .info-container br {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-container">
+        <h1>Visitor Pass</h1>
+        <div class="info">
+            <strong>Name:</strong>
+            <span>{{ name }}</span>
+        </div>
+        <br>
+        <div class="info">
+            <strong>Date of Birth:</strong>
+            <span>{{ birth_date }}</span>
+        </div>
+        <br>
+        <div class="info">
+            <strong>Gender:</strong>
+            <span>{{ gender }}</span>
+        </div>
+        <br>
+        <div class="info">
+            <strong>Age:</strong>
+            <span>{{ age }}</span>
+        </div>
+        <br>
+        {% if pan_number %}
+        <div class="info">
+            <strong>PAN Number:</strong>
+            <span>{{ pan_number }}</span>
+        </div>
+        <br>
+        {% endif %}
+        <div class="info">
+            <strong>Aadhaar Number:</strong>
+            <span>{{ aadhaar_number }}</span>
+        </div>
+        <br>
+    </div>
+</body>
+</html>
